@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import classes from './Quiz.module.scss';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
+import FinalScore from '../../components/FinalScore/FinalScore';
 
 export default class Quiz extends Component {
   state = {
     activeQuestion: 0,
     answerState: null,
+    isFinished: true,
     quiz: [
       {
         id: 1,
@@ -55,7 +57,9 @@ export default class Quiz extends Component {
         });
 
         if (this.isQuizFinished()) {
-          console.log('finished');
+          this.setState({
+            isFinished: true,
+          });
         } else {
           this.setState({
             activeQuestion: this.state.activeQuestion + 1,
@@ -71,6 +75,12 @@ export default class Quiz extends Component {
     }
   };
 
+  handleQuizRepeatButtonClick = () => {
+    this.setState({
+      isFinished: false,
+    });
+  };
+
   isQuizFinished() {
     return this.state.activeQuestion + 1 === this.state.quiz.length;
   }
@@ -80,14 +90,19 @@ export default class Quiz extends Component {
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1 className={classes.QuizTitle}>Quiz</h1>
-          <ActiveQuiz
-            question={this.state.quiz[this.state.activeQuestion].question}
-            answers={this.state.quiz[this.state.activeQuestion].answers}
-            quizLength={this.state.quiz.length}
-            questionNumber={this.state.activeQuestion + 1}
-            handleAnswerItemClick={this.handleAnswerItemClick}
-            answerState={this.state.answerState}
-          />
+
+          {this.state.isFinished ? (
+            <FinalScore handleQuizRepeatButtonClick={this.handleQuizRepeatButtonClick} />
+          ) : (
+            <ActiveQuiz
+              question={this.state.quiz[this.state.activeQuestion].question}
+              answers={this.state.quiz[this.state.activeQuestion].answers}
+              quizLength={this.state.quiz.length}
+              questionNumber={this.state.activeQuestion + 1}
+              handleAnswerItemClick={this.handleAnswerItemClick}
+              answerState={this.state.answerState}
+            />
+          )}
         </div>
       </div>
     );

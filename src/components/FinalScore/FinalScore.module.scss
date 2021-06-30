@@ -1,0 +1,51 @@
+.FinalScore {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 2px solid #fefefe;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #fefefe;
+}
+
+.Title {
+  text-align: center;
+  margin: 0 0 15px;
+}
+
+.ScoreList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ScoreItem {
+  display: flex;
+  align-items: center;
+}
+
+.ScoreItemIcon {
+  margin-left: 10px;
+}
+
+.Desc {
+  text-align: center;
+}
+
+.Button {
+  align-self: center;
+  padding: 8px 15px;
+  color: #fefefe;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background-color: transparent;
+  border: 1px solid #fefefe;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgba($color: #000, $alpha: 0.2);
+    transition: 0.3s background ease;
+  }
+}
