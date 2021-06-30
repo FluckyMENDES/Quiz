@@ -5,6 +5,7 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 export default class Quiz extends Component {
   state = {
     activeQuestion: 0,
+    answerState: null,
     quiz: [
       {
         id: 1,
@@ -32,14 +33,47 @@ export default class Quiz extends Component {
   };
 
   handleAnswerItemClick = (answerId) => {
-    this.setState({
-      activeQuestion: this.state.activeQuestion + 1,
-    });
+    const question = this.state.quiz[this.state.activeQuestion];
 
-    if (answerId === this.state.quiz[this.state.activeQuestion].rightAnswerId) {
-      console.log('true');
+    // Обработка бага двойного нажатия на правильный ответ
+    if (this.state.answerState) {
+      const key = Object.keys(this.state.answerState)[0];
+
+      if (this.state.answerState[key] === 'success') {
+        return;
+      }
+    }
+
+    if (answerId === question.rightAnswerId) {
+      this.setState({
+        answerState: { [answerId]: 'success' },
+      });
+
+      const timeout = window.setTimeout(() => {
+        this.setState({
+          answerState: null,
+        });
+
+        if (this.isQuizFinished()) {
+          console.log('finished');
+        } else {
+          this.setState({
+            activeQuestion: this.state.activeQuestion + 1,
+          });
+        }
+
+        window.clearTimeout(timeout);
+      }, 1000);
+    } else {
+      this.setState({
+        answerState: { [answerId]: 'error' },
+      });
     }
   };
+
+  isQuizFinished() {
+    return this.state.activeQuestion + 1 === this.state.quiz.length;
+  }
 
   render() {
     return (
@@ -52,6 +86,7 @@ export default class Quiz extends Component {
             quizLength={this.state.quiz.length}
             questionNumber={this.state.activeQuestion + 1}
             handleAnswerItemClick={this.handleAnswerItemClick}
+            answerState={this.state.answerState}
           />
         </div>
       </div>

@@ -10,4 +10,12 @@
     background-color: rgba($color: #fefefe, $alpha: 0.25);
     transition: 0.3s background ease;
   }
+
+  &.success {
+    background-color: rgba($color: limegreen, $alpha: 0.7);
+  }
+
+  &.error {
+    background: rgba($color: tomato, $alpha: 0.7);
+  }
 }
