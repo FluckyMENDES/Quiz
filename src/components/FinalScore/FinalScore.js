@@ -1,5 +1,7 @@
 import React from 'react';
 import classes from './FinalScore.module.scss';
+import Button from '../UI/Button/Button';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,10 +38,21 @@ const FinalScore = (props) => {
         Правильно {successCounter} из {props.quiz.length}
       </p>
 
-      <button className={classes.Button} onClick={props.handleQuizRepeatButtonClick}>
-        Повторить
-        <FontAwesomeIcon className={classes.ScoreItemIcon} icon={faRedoAlt} color="#fefefe" />
-      </button>
+      <div>
+        <Button
+          className={classes.Button}
+          type="primary"
+          onClick={props.handleQuizRepeatButtonClick}>
+          Повторить
+          <FontAwesomeIcon className={classes.ScoreItemIcon} icon={faRedoAlt} color="#fefefe" />
+        </Button>
+        <Button
+          className={classes.Button}
+          type="success"
+          onClick={props.handleQuizRepeatButtonClick}>
+          К списку тестов
+        </Button>
+      </div>
     </div>
   );
 };
