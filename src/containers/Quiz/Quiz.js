@@ -7,7 +7,7 @@ export default class Quiz extends Component {
   state = {
     activeQuestion: 0,
     answerState: null,
-    isFinished: true,
+    isFinished: false,
     quiz: [
       {
         id: 1,
@@ -32,10 +32,12 @@ export default class Quiz extends Component {
         rightAnswerId: 1,
       },
     ],
+    results: {},
   };
 
   handleAnswerItemClick = (answerId) => {
     const question = this.state.quiz[this.state.activeQuestion];
+    const results = this.state.results;
 
     // Обработка бага двойного нажатия на правильный ответ
     if (this.state.answerState) {
@@ -47,8 +49,13 @@ export default class Quiz extends Component {
     }
 
     if (answerId === question.rightAnswerId) {
+      if (!results[this.state.activeQuestion + 1]) {
+        results[question.id] = 'success';
+      }
+
       this.setState({
         answerState: { [answerId]: 'success' },
+        results,
       });
 
       const timeout = window.setTimeout(() => {
@@ -69,8 +76,10 @@ export default class Quiz extends Component {
         window.clearTimeout(timeout);
       }, 1000);
     } else {
+      results[question.id] = 'error';
       this.setState({
         answerState: { [answerId]: 'error' },
+        results,
       });
     }
   };
@@ -78,6 +87,9 @@ export default class Quiz extends Component {
   handleQuizRepeatButtonClick = () => {
     this.setState({
       isFinished: false,
+      activeQuestion: 0,
+      answerState: null,
+      results: {},
     });
   };
 
@@ -92,7 +104,11 @@ export default class Quiz extends Component {
           <h1 className={classes.QuizTitle}>Quiz</h1>
 
           {this.state.isFinished ? (
-            <FinalScore handleQuizRepeatButtonClick={this.handleQuizRepeatButtonClick} />
+            <FinalScore
+              quiz={this.state.quiz}
+              results={this.state.results}
+              handleQuizRepeatButtonClick={this.handleQuizRepeatButtonClick}
+            />
           ) : (
             <ActiveQuiz
               question={this.state.quiz[this.state.activeQuestion].question}
