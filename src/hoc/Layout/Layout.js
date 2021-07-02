@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './Layout.module.scss';
 import MenuToggle from '../../components/Navigation/MenuToggle/MenuToggle';
+import Drawer from '../../components/Navigation/Drawer/Drawer';
 
 export default class Layout extends Component {
   state = {
@@ -13,10 +14,17 @@ export default class Layout extends Component {
     });
   };
 
+  handleMenuClose = () => {
+    this.setState({
+      isMenuOpen: false,
+    });
+  };
+
   render() {
     return (
       <div className={classes.Layout}>
-        <MenuToggle onToggle={this.handleMenuToggle} isOpen={this.state.isMenuOpen} />
+        <Drawer isMenuOpen={this.state.isMenuOpen} onMenuClose={this.handleMenuClose} />
+        <MenuToggle onToggle={this.handleMenuToggle} isMenuOpen={this.state.isMenuOpen} />
         <main className={classes.Main}>{this.props.children}</main>
       </div>
     );
