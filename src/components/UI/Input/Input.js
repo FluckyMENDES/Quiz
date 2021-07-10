@@ -5,6 +5,10 @@ function isInvalid({ valid, touched, shouldValidate }) {
   return !valid && shouldValidate && touched;
 }
 
+function isValid({ valid, touched }) {
+  return valid && touched;
+}
+
 const Input = (props) => {
   const cls = [classes.Input];
   const inputType = props.type || 'text';
@@ -13,6 +17,10 @@ const Input = (props) => {
 
   if (isInvalid(props)) {
     cls.push(classes.invalid);
+  }
+
+  if (isValid(props)) {
+    cls.push(classes.valid);
   }
 
   return (

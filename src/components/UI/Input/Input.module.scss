@@ -11,6 +11,12 @@
     }
   }
 
+  &.valid {
+    & input {
+      border-color: limegreen;
+    }
+  }
+
   & label {
     display: block;
     margin-bottom: 3px;
