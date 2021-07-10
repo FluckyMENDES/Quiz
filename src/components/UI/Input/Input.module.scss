@@ -1,0 +1,38 @@
+.Input {
+  margin-bottom: 15px;
+
+  &.invalid {
+    & label {
+      color: tomato;
+    }
+
+    & input {
+      border-color: tomato;
+    }
+  }
+
+  & label {
+    display: block;
+    margin-bottom: 3px;
+    padding: 0;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  & input {
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #bebebe;
+    padding: 7px 10px;
+    margin: 0 0 5px;
+    width: 100%;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  & span {
+    color: tomato;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
