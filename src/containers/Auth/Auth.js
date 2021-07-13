@@ -23,7 +23,7 @@ export default class Auth extends Component {
         value: '',
         type: 'password',
         label: 'Пароль',
-        errorMessage: 'Введите корректный пароль',
+        errorMessage: 'Минимальная длина 6 символов',
         valid: false,
         touched: false,
         validation: {
