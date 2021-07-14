@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../../axios/axios-quiz';
 import { NavLink } from 'react-router-dom';
 import Preloader from '../../components/UI/Preloader/Preloader';
 import classes from './QuizList.module.scss';
@@ -22,9 +22,7 @@ export default class QuizList extends Component {
 
   async componentDidMount() {
     try {
-      const response = await axios.get(
-        'https://react-quiz-e74fd-default-rtdb.europe-west1.firebasedatabase.app/quizes.json'
-      );
+      const response = await axios.get('/quizes.json');
 
       const quizes = [];
       Object.keys(response.data).forEach((key, index) => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Quiz.module.scss';
+import axios from '../../axios/axios-quiz';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinalScore from '../../components/FinalScore/FinalScore';
 
