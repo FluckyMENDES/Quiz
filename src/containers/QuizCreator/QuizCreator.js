@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 import classes from './QuizCreator.module.scss';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
@@ -110,9 +111,23 @@ export default class QuizCreator extends Component {
     });
   };
 
-  createQuizHandle = () => {
-    console.log(this.state.quiz);
-    // TODO: Server
+  createQuizHandle = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        'https://react-quiz-e74fd-default-rtdb.europe-west1.firebasedatabase.app/quizes.json',
+        this.state.quiz
+      );
+
+      this.setState({
+        quiz: [],
+        isFormValid: false,
+        formControls: createFormControls(),
+        rightAnswerId: 1,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   formSubmitHandle = (e) => {
