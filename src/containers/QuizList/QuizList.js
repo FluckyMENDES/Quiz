@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import Preloader from '../../components/UI/Preloader/Preloader';
 import classes from './QuizList.module.scss';
 
 export default class QuizList extends Component {
   state = {
     quizes: [],
+    loading: true,
   };
 
   renderQuizes() {
@@ -34,6 +36,7 @@ export default class QuizList extends Component {
 
       this.setState({
         quizes,
+        loading: false,
       });
     } catch (error) {
       console.log(error);
@@ -45,8 +48,7 @@ export default class QuizList extends Component {
       <div className={classes.QuizList}>
         <div>
           <h1>Список квизов</h1>
-
-          <ul>{this.renderQuizes()}</ul>
+          {this.state.loading ? <Preloader /> : <ul>{this.renderQuizes()}</ul>}
         </div>
       </div>
     );
