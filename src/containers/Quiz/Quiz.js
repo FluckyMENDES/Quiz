@@ -4,73 +4,15 @@ import Preloader from '../../components/UI/Preloader/Preloader';
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz';
 import FinalScore from '../../components/FinalScore/FinalScore';
 import { connect } from 'react-redux';
-import { fetchQuizById } from './../../store/actions/quiz';
+import { fetchQuizById, quizAnswerClick, retryQuiz } from './../../store/actions/quiz';
 
 class Quiz extends Component {
-  handleAnswerItemClick = (answerId) => {
-    const question = this.state.quiz[this.state.activeQuestion];
-    const results = this.state.results;
-
-    // Обработка бага двойного нажатия на правильный ответ
-    if (this.state.answerState) {
-      const key = Object.keys(this.state.answerState)[0];
-
-      if (this.state.answerState[key] === 'success') {
-        return;
-      }
-    }
-
-    if (answerId === question.rightAnswerId) {
-      if (!results[this.state.activeQuestion + 1]) {
-        results[question.id] = 'success';
-      }
-
-      this.setState({
-        answerState: { [answerId]: 'success' },
-        results,
-      });
-
-      const timeout = window.setTimeout(() => {
-        this.setState({
-          answerState: null,
-        });
-
-        if (this.isQuizFinished()) {
-          this.setState({
-            isFinished: true,
-          });
-        } else {
-          this.setState({
-            activeQuestion: this.state.activeQuestion + 1,
-          });
-        }
-
-        window.clearTimeout(timeout);
-      }, 1000);
-    } else {
-      results[question.id] = 'error';
-      this.setState({
-        answerState: { [answerId]: 'error' },
-        results,
-      });
-    }
-  };
-
-  handleQuizRepeatButtonClick = () => {
-    this.setState({
-      isFinished: false,
-      activeQuestion: 0,
-      answerState: null,
-      results: {},
-    });
-  };
-
-  isQuizFinished() {
-    return this.state.activeQuestion + 1 === this.state.quiz.length;
-  }
-
   componentDidMount() {
     this.props.fetchQuizById(this.props.match.params.id);
+  }
+
+  componentWillUnmount() {
+    this.props.retryQuiz();
   }
 
   render() {
@@ -85,7 +27,7 @@ class Quiz extends Component {
             <FinalScore
               quiz={this.props.quiz}
               results={this.props.results}
-              handleQuizRepeatButtonClick={this.handleQuizRepeatButtonClick}
+              handleQuizRepeatButtonClick={this.props.retryQuiz}
             />
           ) : (
             <ActiveQuiz
@@ -93,7 +35,7 @@ class Quiz extends Component {
               answers={this.props.quiz[this.props.activeQuestion].answers}
               quizLength={this.props.quiz.length}
               questionNumber={this.props.activeQuestion + 1}
-              handleAnswerItemClick={this.handleAnswerItemClick}
+              handleAnswerItemClick={this.props.quizAnswerClick}
               answerState={this.props.answerState}
             />
           )}
@@ -117,6 +59,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchQuizById: (id) => dispatch(fetchQuizById(id)),
+    quizAnswerClick: (answerId) => dispatch(quizAnswerClick(answerId)),
+    retryQuiz: () => dispatch(retryQuiz()),
   };
 }
 
